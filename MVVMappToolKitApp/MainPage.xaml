@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MVVMappToolKitApp.MainPage"
+             Title="MKN Sorteio - App Oficial">
+    <VerticalStackLayout
+        Spacing="5"
+        Padding="20">
+        <Label
+            Text="Nome"
+            HorizontalOptions="Start"/>
+
+        <Entry
+            x:Name="entryNome"
+            Text="{Binding Nome}"
+            Placeholder="Nome"
+            BackgroundColor="#D3D3D3"
+            PlaceholderColor="#808080"
+            WidthRequest="360"
+            HorizontalOptions="Start"
+            Keyboard="Text"
+            Focused="EntryNomeFocus"
+            Completed="EntryNomeCompletado"/>
+
+        <Label
+            Text="Sobrenome"
+            HorizontalOptions="Start"/>
+
+        <Entry
+            x:Name="entrySobrenome"
+            Text="{Binding Sobrenome}"
+            Placeholder="Sobremone"
+            BackgroundColor="#D3D3D3"
+            PlaceholderColor="#808080"
+            WidthRequest="360"
+            HorizontalOptions="Start"
+            Focused="EntryNomeCompletado"
+            Completed="EntrySobrenomeCompletado"
+            Keyboard="Text"/>
+
+        <Label
+            x:Name="lblMessagem"
+            Text="{Binding Message}"
+            TextColor="#FF0000"
+            FontSize="Body"
+            FontAutoScalingEnabled="True"
+            FontAttributes="Bold"/>
+        
+        <Button
+                x:Name="btnInserirNome"
+                Text="Inserir Dados"
+                BackgroundColor="#008000"
+                Command="{Binding IncluirNomeCommand}"
+                Clicked="BtnInserirNome"/>
+
+            <Button
+                x:Name="btnSortearNome"
+                Text="Sortear"
+                BackgroundColor="#FF8C00"
+                Command="{Binding SortearNomeCommand}"/>
+
+        <ListView ItemsSource="{Binding Participantes}"
+            BackgroundColor="#B0E0E6"
+            WidthRequest="360">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding .}"
+                              />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </VerticalStackLayout>
+</ContentPage>
