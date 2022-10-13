@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:MVVMappToolKitApp.Models"
+             xmlns:Viewmodel="clr-namespace:MVVMappToolKitApp.ViewModels"
+             x:DataType="Viewmodel:MainViewModel"
              x:Class="MVVMappToolKitApp.MainPage"
-             Title="MKN Sorteio - App Oficial">
-    <VerticalStackLayout
-        Spacing="5"
-        Padding="20">
+             Title="{Binding Title, Mode=TwoWay}">
+    <Grid
+        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,*"
+        Padding="20"
+        RowSpacing="10"
+        HorizontalOptions="Center">
+
         <Label
+            Grid.Row="0"
             Text="Nome"
             HorizontalOptions="Start"/>
 
         <Entry
+            Grid.Row="1"
             x:Name="entryNome"
             Text="{Binding Nome}"
             Placeholder="Nome"
@@ -23,10 +31,12 @@
             Completed="EntryNomeCompletado"/>
 
         <Label
+            Grid.Row="2"
             Text="Sobrenome"
             HorizontalOptions="Start"/>
 
         <Entry
+            Grid.Row="3"
             x:Name="entrySobrenome"
             Text="{Binding Sobrenome}"
             Placeholder="Sobremone"
@@ -38,37 +48,46 @@
             Completed="EntrySobrenomeCompletado"
             Keyboard="Text"/>
 
+        <Button
+            Grid.Row="4"
+            x:Name="btnInserirNome"
+            Text="Inserir Dados"
+            WidthRequest="360"
+            BackgroundColor="#008000"
+            Command="{Binding IncluirNomeCommand}"
+            Clicked="BtnInserirNome"/>
+
+        <Button
+            Grid.Row="5"
+            x:Name="btnSortearNome"
+            Text="Sortear"
+            WidthRequest="360"
+            BackgroundColor="#FF8C00"
+            Command="{Binding SortearNomeCommand}"/>
+        
         <Label
+            Grid.Row="6"
             x:Name="lblMessagem"
-            Text="{Binding Message}"
+            Text="{Binding Message,Mode=TwoWay}"
             TextColor="#FF0000"
             FontSize="Body"
             FontAutoScalingEnabled="True"
             FontAttributes="Bold"/>
-        
-        <Button
-                x:Name="btnInserirNome"
-                Text="Inserir Dados"
-                BackgroundColor="#008000"
-                Command="{Binding IncluirNomeCommand}"
-                Clicked="BtnInserirNome"/>
 
-            <Button
-                x:Name="btnSortearNome"
-                Text="Sortear"
-                BackgroundColor="#FF8C00"
-                Command="{Binding SortearNomeCommand}"/>
-
-        <ListView ItemsSource="{Binding Participantes}"
-            BackgroundColor="#B0E0E6"
+        <Frame
+            Grid.Row="7"
+            Padding="0"
             WidthRequest="360">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding .}"
-                              />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-    </VerticalStackLayout>
+            <CollectionView           
+            BackgroundColor="PowderBlue"
+            ItemsSource="{Binding Participantes}"
+                    SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Participante">
+                        <Label Text="{Binding .}" Margin="15,7,15,7" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+    </Grid>
 </ContentPage>

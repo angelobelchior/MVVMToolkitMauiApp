@@ -4,30 +4,31 @@ using System.Collections.ObjectModel;
 
 namespace MVVMappToolKitApp.ViewModels
 {
-    public partial class MainViewModel : ObservableObject
+    public partial class MainViewModel : BaseViewModel
     {
-
+        private const string V = "MKN Sorteios - App Oficial";
         [ObservableProperty]
         public string nome;
 
         [ObservableProperty]
         public string sobrenome;
+
         [ObservableProperty]
         private string pessoaGanhadora;
+
         [ObservableProperty]
         private string message;
 
         public ObservableCollection<string> Participantes { get; set; }
-        public RelayCommand IncluirNomeCommand { get; private set; }
-        public RelayCommand SortearNomeCommand { get; private set; }
 
         public MainViewModel()
         {
-            IncluirNomeCommand = new RelayCommand(IncluirNome);
-            SortearNomeCommand = new RelayCommand(SortearNome);
+            Title = V;
+
             Participantes = new ObservableCollection<string>();
         }
 
+        [RelayCommand]
         private void SortearNome()
         {
             Message=string.Empty;
@@ -38,22 +39,24 @@ namespace MVVMappToolKitApp.ViewModels
                     Random.Shared.Next(0, Participantes.Count);
                     var indice = Random.Shared.Next(0, Participantes.Count);
                     PessoaGanhadora = Participantes[indice];
-                    App.Current.MainPage.DisplayAlert($"Parabéns {PessoaGanhadora} !!!", "Voce foi o ganhador desta  rodada. ;)", "Ok");
+                    Shell.Current.DisplayAlert($"Parabéns {PessoaGanhadora} !!!", "Voce foi o ganhador desta  rodada. ;)", "Ok");
                     Participantes.Remove(PessoaGanhadora);
                     Message = string.Empty;
 
                 }
                 else
                 {
-                    Message = ("Impossivel realizar o sorteio. Erro: Lista vazia.");
+                    Message = "Impossivel realizar o sorteio. Erro: Lista vazia.";
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                Message=("Impossivel realizar o sorteio. Erro: Lista vazia.");
+                Message=$"Erro: Lista vazia. Erro: {ex.Message}";
+                Shell.Current.DisplayAlert("ERRO.", $"{Message}", "Ok");
             }
         }
 
+        [RelayCommand]
         private void IncluirNome()
         {
             Message = string.Empty;
@@ -72,9 +75,11 @@ namespace MVVMappToolKitApp.ViewModels
                     Message=("Erro. O campo nome é obrigatorio.");
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                Message = ("Erro. Impossibile inserir dados.");
+                Message = $"Impossibile inserir dados. Erro: {ex.Message}";
+                Shell.Current.DisplayAlert("ERRO.", $"{Message}", "Ok");
+                return;
             }
         }
     }
